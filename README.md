@@ -1,6 +1,11 @@
 # S1Vis
+This project is created and developed for the I3 Project at the University of Salzburg.
+## Project Idea
+This project aims at developing a Google Earth Engine Application that allows to visualize and analyze Sentinel-1 data for humanitarian applications. A first focus is set on implementing functionalities for dwelling detection.
 
-Sentinel-1 Visualization and Exploration Tool for Humanitarian Applications
+## GEE App
+The App can be accessed [here](link)
+
 
 ## Getting started
 
