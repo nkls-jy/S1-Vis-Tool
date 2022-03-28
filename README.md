@@ -9,7 +9,7 @@ The last 15 years have seen an increase of applications where geospatial technol
 **Keywords:** Sentinel-1, Earth Engine, App, Earth Observation, Humanitarian application
 
 ## Project Goals
-- Working Google EArth Engine App
+- Working Google Earth Engine App
 - User-friendly and intuitive UI
 - lowering entry barrier for radar-based information retrieval
 
