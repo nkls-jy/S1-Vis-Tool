@@ -17,8 +17,7 @@ The last 15 years have seen an increase of applications where geospatial technol
 The current project status is shown [here](https://git.sbg.ac.at/s1079105/s1vis/-/blob/main/management/gantt_chart.PNG)
 
 ## GEE App
-_TBA_
-The App can be accessed [here](link)
+_TBA_: The App can be accessed [here](link)
 
 ## Usage
 The project contains an integrated example that showcases how to use the application. 
