@@ -14,7 +14,7 @@ The last 15 years have seen an increase of applications where geospatial technol
 - lowering entry barrier for radar-based information retrieval
 
 ## Project Status
-The current project status is shown [here](https://git.sbg.ac.at/s1079105/s1vis/-/blob/main/management/ganttChart04.png)
+The current project status is shown [here](https://git.sbg.ac.at/s1079105/s1vis/-/blob/main/management/ganttChart04.PNG)
 
 ## GEE App
 _TBA_: The App can be accessed [here](link)
