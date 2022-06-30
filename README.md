@@ -16,11 +16,10 @@ The last 15 years have seen an increase of applications where geospatial technol
 ## Project Status
 The current project status is shown [here](https://git.sbg.ac.at/s1079105/s1vis/-/blob/main/management/ganttChart_05.png)
 
-## GEE App
-_TBA_: The App can be accessed [here](link)
+By 30.06.2022 the project in context of the I3 project is finished and closed. All relevant documents are handed in and/or available in this repo. 
 
-## Usage
-The project contains an integrated example that showcases how to use the application. 
+## GEE App
+_TBA_: The App can be accessed [here](https://njy.users.earthengine.app/view/s1-vis-tool)
 
 ## Support
 For improvement ideas, comment, critique and everything else please email me (s1079105@stud.sbg.ac.at).
