@@ -19,7 +19,7 @@ The current project status is shown [here](https://git.sbg.ac.at/s1079105/s1vis/
 By 30.06.2022 the project in context of the I3 project is finished and closed. All relevant documents are handed in and/or available in this repo. 
 
 ## GEE App
-_TBA_: The App can be accessed [here](https://njy.users.earthengine.app/view/s1-vis-tool)
+The App can be accessed [here](https://njy.users.earthengine.app/view/s1-vis-tool)
 
 ## Support
 For improvement ideas, comment, critique and everything else please email me (s1079105@stud.sbg.ac.at).
