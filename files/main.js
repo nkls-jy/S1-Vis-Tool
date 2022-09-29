@@ -20,8 +20,8 @@ drawingTools.setShown(false);
 
 
 while (drawingTools.layers().length() > 0) {
-    var layer = drawingTools.layers().get(0);
-    drawingTools.layers().remove(layer);
+  var layer = drawingTools.layers().get(0);
+  drawingTools.layers().remove(layer);
 }
 
 var dummyGeometry =
@@ -30,72 +30,75 @@ var dummyGeometry =
 drawingTools.layers().add(dummyGeometry);
 
 function clearGeometry() {
-    var layers = drawingTools.layers();
-    if (layers.length() > 0){
-        layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
-    }
+  var layers = drawingTools.layers();
+  if (layers.length() > 0){
+    layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
+  }
 }
 
 function drawPolygon() {
-    clearGeometry();
-    drawingTools.setShape('polygon');
-    drawingTools.draw();
+  clearGeometry();
+  drawingTools.setShape('polygon');
+  drawingTools.draw();
 }
 
 function stopDrawing() {
-    // Get the drawn geometry
-    print(drawingTools.layers().length());
+  // Get the drawn geometry
+  print(drawingTools.layers().length());
+  
+  if (drawingTools.layers().length() > 0) {
+    aoi = drawingTools.layers().get(0).getEeObject();
 
-    if (drawingTools.layers().length() > 0) {
-        aoi = drawingTools.layers().get(0).getEeObject();
-
-        drawingTools.setShape(null);
-        map.centerObject(aoi);
-        map.remove(aoiPanel);
-    }else{
-        print('No AOI yet');
-    }
+    drawingTools.setShape(null);
+    map.centerObject(aoi);
+    map.remove(aoiPanel);
+  }else{
+    print('No AOI yet');
+  }
 }
 
 function getLyr(drawingTools) {
-    var lyr = drawingTools.toFeatureCollection();
+  var lyr = drawingTools.toFeatureCollection();
 }
 
 drawingTools.onDraw(ui.util.debounce(stopDrawing, 500));
 drawingTools.onEdit(ui.util.debounce(stopDrawing, 500));
 
 var aoiPanel = ui.Panel({
-    widgets: [
-        ui.Label('1) Select your AOI'),
-        ui.Button({
-            label: '🔺' + ' Polygon',
-            onClick: drawPolygon,
-            style: {stretch: 'horizontal'}
-        })
-    ],
-    style: {position: 'top-center'},
-    layout: null,
+  widgets: [
+    ui.Label('1) Select your AOI'),
+    ui.Button({
+      label: '🔺' + ' Polygon',
+      onClick: drawPolygon,
+      style: {stretch: 'horizontal'}
+    })
+  ],
+  style: {position: 'top-center'},
+  layout: null,
 });
 
 // -----------------------------------
 // Implementing changing the View Mode
 // ----------------------------------
 var Modes = {
-    "Split Panel": 1,
+    "Split Panel": 1, 
     "Linked Maps": 2
 };
 
 uf.viewMode.onChange(
-    function(selection){
-        if (Modes[selection] == 1) {
-            //create Split Panel
-            splitP.getFirstPanel().centerObject(aoi, 14);
-            ui.root.widgets().reset([ovPanel, splitP]);
-        }else{
-            //create Linked Maps
-            ui.root.widgets().reset([ovPanel, linkMaps]);
-        }
+  function(selection){
+    if (Modes[selection] == 1) {
+    //create Split Panel
+    splitP.getFirstPanel().centerObject(aoi, 14);
+    ui.root.widgets().reset([ovPanel, splitP]);
+    }else{
+    //create Linked Maps
+    ui.root.widgets().reset([ovPanel, linkMaps]);
+    print(ui.root.widgets());
+    print(typeof(ui.root.widgets().get(1)));
+    ui.root.widgets().get(1).widgets().get(1).widgets().get(0).centerObject(aoi, 15);
     }
+  }
 );
 
 // ------------------------------------------
@@ -142,25 +145,25 @@ uf.checkImagery.onClick(
         // remove drawn AOI from Map
         drawingTools.layers().remove(drawingTools.layers().get(0));
         map.clear();
-
+        
         // add images to Dictionary
         images['Radar T1'] = s1_t1.visualize(s1_vis);
         images['Radar T2'] = s1_t2.visualize(s1_vis);
         images['RGB composite'] = RGBstack.visualize(stackVis);
         images['Optical T2'] = s2_t2.visualize(s2_vis);
         //print(images)
-
+        
         // create Split Panel as Default
         splitP = uf.createSplitPanel(s1_t1, s1_t2, images, s1_vis);
         splitP.getFirstPanel().centerObject(aoi);
         ovPanel.style().set('width', '25%');
         ui.root.widgets().reset([ovPanel, splitP]);
-
-
-        // also create Linked Maps
+       
+        
+        // also create Linked Maps 
         //linkMaps = uf.createLinkMaps(images, visParams);
         linkMaps = uf.createLinkMaps(images, s1_vis, stackVis, s2_vis);
-
+        
         dTools = linkMaps.widgets().get(1).widgets().get(0).drawingTools();
         dTools.setShown(false);
 
@@ -168,91 +171,91 @@ uf.checkImagery.onClick(
 );
 
 function clearGeometryDTools(){
-    var layers = dTools.layers();
-    layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
+  var layers = dTools.layers();
+  layers.get(0).geometries().remove(layers.get(0).geometries().get(0));
 }
 
 function drawPolygonDTools(){
-    clearGeometryDTools();
-    dTools.setShape('polygon');
-    dTools.draw();
+  clearGeometryDTools();
+  dTools.setShape('polygon');
+  dTools.draw();
 }
 
 var fc;
 
 uf.digMode.onClick(
-    function(){
-        if (uf.digMode.getLabel() == 'Start Digitization'){
-            uf.digMode.setLabel('Finish Drawing Mode');
-
-            // Add labels for non-digitizable maps
-            var nonDrawLabel1 = ui.Label({value: 'Drawing disabled in this map',
-                style: {color: 'EE605E', position: 'bottom-center', backgroundColor: 'rgba(255, 255, 255, 1.0)'}});
-            var nonDrawLabel2 = ui.Label({value: 'Drawing disabled in this map',
-                style: {color: 'EE605E', position: 'bottom-center', backgroundColor: 'rgba(255, 255, 255, 1.0)'}});
-            var nonDrawLabel3 = ui.Label({value: 'Drawing disabled in this map',
-                style: {color: 'EE605E', position: 'bottom-center', backgroundColor: 'rgba(255, 255, 255, 1.0)'}});
-            linkMaps.widgets().get(0).widgets().get(0).add(nonDrawLabel1);
-            linkMaps.widgets().get(0).widgets().get(1).add(nonDrawLabel2);
-            linkMaps.widgets().get(1).widgets().get(1).add(nonDrawLabel3);
-
-            ui.root.widgets().reset([ovPanel, linkMaps]);
-            linkMaps.widgets().get(0).widgets().get(0).centerObject(images['Radar T1']);
-
-            //var m = linkMaps.widgets().get(0).widgets().get(1);
-            //dTools = m.drawingTools();
-            //dTools.setShown(false);
-
-            while (dTools.layers().length() > 0) {
-                var layer = dTools.layers().get(0);
-                dTools.layers().remove(layer);
-            }
-
-            var dummyGeometry =
-                ui.Map.GeometryLayer({geometries: null, name: 'change', color: 'red'});
-            dTools.layers().add(dummyGeometry);
-
-            //linkMaps.widgets().get(0).widgets().get(1).drawingTools().layers().add(dummyGeometry);
-
-            drawPolygonDTools();
-
-        } else {
-            uf.digMode.setLabel('Start Digitization');
-            //lyr = dTools.layers().get(0);
-            dTools = dTools.stop();
-            fc = dTools.toFeatureCollection();
-            dTools.setShape(null);
-        }
-
-    });
+  function(){
+    if (uf.digMode.getLabel() == 'Start Digitization'){
+      uf.digMode.setLabel('Finish Drawing Mode');
+      
+      // Add labels for non-digitizable maps
+      var nonDrawLabel1 = ui.Label({value: 'Drawing disabled in this map',
+        style: {color: 'EE605E', position: 'bottom-center', backgroundColor: 'rgba(255, 255, 255, 1.0)'}});
+      var nonDrawLabel2 = ui.Label({value: 'Drawing disabled in this map',
+        style: {color: 'EE605E', position: 'bottom-center', backgroundColor: 'rgba(255, 255, 255, 1.0)'}});
+      var nonDrawLabel3 = ui.Label({value: 'Drawing disabled in this map',
+        style: {color: 'EE605E', position: 'bottom-center', backgroundColor: 'rgba(255, 255, 255, 1.0)'}});
+      linkMaps.widgets().get(0).widgets().get(0).add(nonDrawLabel1);
+      linkMaps.widgets().get(0).widgets().get(1).add(nonDrawLabel2);
+      linkMaps.widgets().get(1).widgets().get(1).add(nonDrawLabel3);
+      
+      ui.root.widgets().reset([ovPanel, linkMaps]);
+      linkMaps.widgets().get(0).widgets().get(0).centerObject(images['Radar T1']);
+      
+      //var m = linkMaps.widgets().get(0).widgets().get(1);
+      //dTools = m.drawingTools();
+      //dTools.setShown(false);
+    
+      while (dTools.layers().length() > 0) {
+        var layer = dTools.layers().get(0);
+        dTools.layers().remove(layer);
+      }
+    
+      var dummyGeometry =
+        ui.Map.GeometryLayer({geometries: null, name: 'change', color: 'red'});
+      dTools.layers().add(dummyGeometry);
+      
+      //linkMaps.widgets().get(0).widgets().get(1).drawingTools().layers().add(dummyGeometry);
+      
+      drawPolygonDTools();
+      
+    } else {
+      uf.digMode.setLabel('Start Digitization');
+      //lyr = dTools.layers().get(0);
+      dTools = dTools.stop();
+      fc = dTools.toFeatureCollection();
+      dTools.setShape(null);
+    }
+    
+});
 
 dTools.onDraw(ui.util.debounce(getLyr(dTools), 500));
 dTools.onEdit(ui.util.debounce(getLyr(dTools), 500));
 
 // Export functionality
 function downloadData() {
-    var downloadArgs = {
-        format: 'geojson',
-        filename: 'Your_Geometries'
-    };
-
-    var fn = uf.fileName.getValue();
-    //print(fn);
-
-    if (fn !== ''){
-        downloadArgs['filename'] = fn;
-    }else{
-        downloadArgs['filename'] = 'geometries'
-    }
-    var url = fc.getDownloadURL(downloadArgs);
-    uf.exLabel.setUrl(url);
-    uf.exLabel.style().set({shown: true});
+  var downloadArgs = {
+    format: 'geojson',
+    filename: 'Your_Geometries'
+  };
+ 
+  var fn = uf.fileName.getValue();
+  //print(fn);
+  
+  if (fn !== ''){
+    downloadArgs['filename'] = fn;
+  }else{
+    downloadArgs['filename'] = 'geometries'
+  }
+  var url = fc.getDownloadURL(downloadArgs);
+  uf.exLabel.setUrl(url);
+  uf.exLabel.style().set({shown: true});
 }
 
 uf.exButton.onClick(downloadData);
 
 // -----------------------------------------------------------
-//                    APP DISPLAY SETUP
+//                    APP DISPLAY SETUP 
 // ---------------------------------------------------------
 ui.root.clear();
 // Test display setup with initial map
